@@ -9,35 +9,31 @@
 // @todo: Вывести карточки на страницу
 
 
+// функция создания карточки
 
-
-// функция добавления карточки
-
-function addPlace(placeData, deleteFunc) {
-  const placesList = document.querySelector('.places__list');
+function createCard(card, deleteFunc) {
   const placeTemplate = document.querySelector('#card-template').content; // Берём содержимое шаблона
   const placeElement = placeTemplate.querySelector('.places__item').cloneNode(true); //клонируем
-  // Наполняем
-  placeElement.querySelector('.card__image').src = placeData[0];
-  placeElement.querySelector('.card__image').alt = 'Картинка';
-  placeElement.querySelector('.card__title').textContent = placeData[1];
+  const cardImage = placeElement.querySelector('.card__image');
+  cardImage.src = card.link; // Наполняем
+  cardImage.alt = card.descr;
+  placeElement.querySelector('.card__title').textContent = card.name;
   placeElement.querySelector('.card__delete-button').addEventListener('click', deleteFunc) //Обработчик из функции удаления
-  placesList.append(placeElement);
+  return placeElement;
 }
 
 // функция удаления карточки
 
 function deletePlace(evt) {
-  const deleteButton = document.querySelector('.card__delete-button');
-  const place = deleteButton.parentElement;
+  const deleteButton = evt.target;
+  const place = deleteButton.closest('.places__item');
   place.remove();
 }
 
 //Запускаем всё
 
 initialCards.forEach(function(item) {
-  let placeMassive = [];
-  placeMassive[0] = item.link;
-  placeMassive[1] = item.name;
-  addPlace(placeMassive, deletePlace);
+  const placesList = document.querySelector('.places__list');
+  const element = createCard(item, deletePlace);
+  placesList.append(element);
 })
