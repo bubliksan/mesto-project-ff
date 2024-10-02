@@ -8,6 +8,8 @@
 
 // @todo: Вывести карточки на страницу
 
+import './index.css';
+import { initialCards } from './scripts/cards.js';
 
 // функция создания карточки
 
