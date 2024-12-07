@@ -12,7 +12,8 @@ import './index.css';
 import { initialCards } from './scripts/cards.js';
 import { createCard, deletePlace ,likeCard, addCard } from './components/card.js';
 const content = document.querySelector('.content');
-const placesList = document.querySelector('.places__list');
+export const placesList = document.querySelector('.places__list');
+export const newCard = {};
 
 
 // Функция закрытия попапа
@@ -56,14 +57,12 @@ function popupShow(popup) {
 
   // функция открытия попапа с картинкой в карточке
 
-  function popupImage(evt) {
+  export function popupImage(evt) {
     const cardPicture = document.querySelector('.popup_type_image');
-    const popupImageSrc = cardPicture.querySelector('.popup__image');
-    const popupImageText = cardPicture.querySelector('.popup__caption');
     const cardName = evt.target.parentElement.innerText;  
-    popupImageSrc.src = evt.target.src;  // добавить ссылку на картинку
-    popupImageSrc.alt = evt.target.alt;  
-    popupImageText.innerText = cardName;  // добавить текст подписи к картинке  
+    cardPicture.querySelector('.popup__image').src = evt.target.src;  // добавить ссылку на картинку
+    cardPicture.querySelector('.popup__caption').alt = evt.target.alt;  
+    cardPicture.querySelector('.popup__caption').innerText = cardName;  // добавить текст подписи к картинке  
     cardPicture.classList.add('popup_is-opened');  // показать попап с картинкой и текстом
     cardPicture.addEventListener('click', popupHide);
     document.addEventListener('keydown', popupHide);

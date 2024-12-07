@@ -1,3 +1,4 @@
+import { popupImage, placesList, newCard  } from "../index.js";
 
 // функция создания карточки
 
@@ -31,8 +32,7 @@ export function likeCard(evt) {
 
   // функция добавления новой карточки
 
-export function addCard(evt) {
-    const newCard = {};
+export function addCard(evt) {   
     const popupAddItem = document.querySelector('.popup_type_new-card');
     const formAdd = document.forms['new-place'];
     const placeInput = formAdd.elements['place-name'];
