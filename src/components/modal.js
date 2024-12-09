@@ -1,15 +1,16 @@
 // Функция закрытия попапа
 
 export function hidePopup(evt) {
-    console.log(evt);
-  if ((evt.target.classList.contains('popup__form')) || (evt.target.classList.contains('popup__close')) || (evt.key === 'Escape')) {
-    const popupList = document.querySelectorAll('.popup');
-    popupList.forEach((item) => {
-      item.classList.remove('popup_is-opened');    
-    });
-    evt.target.removeEventListener('click', hidePopup);
-    document.removeEventListener('keydown', hidePopup);
-  }
+  const eventClasses = ['popup', 'popup__form', 'popup__close', 'Escape'];
+  eventClasses.forEach(element => {
+      if ((evt.target.classList.contains(element)) || (evt.key === element)) {
+        const itemPopup = document.querySelector('.popup_is-opened');
+        console.log(itemPopup);
+        itemPopup.classList.remove('popup_is-opened');
+        evt.target.removeEventListener('click', hidePopup);
+        document.removeEventListener('keydown', hidePopup);
+    };
+  });
 }
   
 // Функция открытия попапа
