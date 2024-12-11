@@ -1,7 +1,6 @@
 // функция создания карточки
 
-export function createCard(card, cardFunc, method = 'append') {
-  const placesList = document.querySelector('.places__list');
+export function createCard(card, cardFunc) {
   const placeTemplate = document.querySelector('#card-template').content; // Берём содержимое шаблона
   const placeElement = placeTemplate.querySelector('.places__item').cloneNode(true); //клонируем
   const cardImage = placeElement.querySelector('.card__image');
@@ -10,11 +9,8 @@ export function createCard(card, cardFunc, method = 'append') {
   placeElement.querySelector('.card__title').textContent = card.name;
   placeElement.querySelector('.card__delete-button').addEventListener('click', cardFunc.delete); //Обработчик из функции удаления
   placeElement.querySelector('.card__like-button').addEventListener('click', cardFunc.like);
-  placeElement.querySelector('.card__image').addEventListener('click', cardFunc.popup);
-  if (method === 'append') {
-    placesList.append(placeElement); // По умолчанию добавит в конец
-  }
-  placesList.prepend(placeElement);
+  cardImage.addEventListener('click', cardFunc.popup);
+  return(placeElement);
 }
 
 // функция удаления карточки
