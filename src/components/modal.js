@@ -15,8 +15,8 @@ export function showPopup(popup) {
 // Функция слушателя нажатия клавиши для попапа
 
 export function pushButtonListener(evt) {
-  const openedPopup = document.querySelector('.popup_is-opened');
-   if (evt.key == 'Escape') {
-      hidePopup(openedPopup);
+  if (evt.key == 'Escape') {
+    const openedPopup = document.querySelector('.popup_is-opened');
+    hidePopup(openedPopup);
   }
 }

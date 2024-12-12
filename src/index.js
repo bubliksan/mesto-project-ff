@@ -11,7 +11,7 @@
 import './index.css';
 import { initialCards } from './scripts/cards.js';
 import { createCard, deletePlace ,likeCard } from './components/card.js';
-import { hidePopup, showPopup, pushButtonListener } from './components/modal.js';
+import { hidePopup, showPopup } from './components/modal.js';
 const editProfileButton = document.querySelector('.profile__edit-button');
 const addCardButton = document.querySelector('.profile__add-button');
 const placesList = document.querySelector('.places__list');
@@ -22,12 +22,12 @@ const cardImage = cardImagePopup.querySelector('.popup__image');
 const cardCaption = cardImagePopup.querySelector('.popup__caption');
 const profileTitle = document.querySelector('.profile__title');
 const profileDescr = document.querySelector('.profile__description');
-const formsAll = document.querySelectorAll('.popup'); 
+const popupsAll = document.querySelectorAll('.popup'); 
 const addForm = document.forms['new-place'];
 const editForm = document.forms['edit-profile'];
 const nameInput = editForm.elements.name;
 const descrInput = editForm.elements.description;
-const cardFunctions = {delete: deletePlace, like: likeCard, popup: showImagePopup}
+const cardFunctions = {delete: deletePlace, like: likeCard, popup: handleImageClick}
 
 // Функция добавления новой карточки
 
@@ -53,14 +53,13 @@ function renderCard(item, method='append') {
 
 // функция открытия попапа с картинкой в карточке
 
-function showImagePopup(evt) {
+function handleImageClick(evt) {
   const currentCard = evt.target.closest('.places__item');
   const cardName = currentCard.querySelector('.card__description');
   cardImage.src = evt.target.src;  // добавить ссылку на картинку
   cardImage.alt = evt.target.alt;  
   cardCaption.innerText = cardName.innerText;  // добавить текст подписи к картинке
   showPopup(cardImagePopup);  // показать попап с картинкой и текстом
-  document.addEventListener('keydown', pushButtonListener);
 }
 
 // Запускаем всё
@@ -71,7 +70,7 @@ initialCards.forEach(function(item) {
 
 // Вешаем обработчик кликов закрытия на формы (вариант)
 
-formsAll.forEach(function(item) {
+popupsAll.forEach(function(item) {
   item.addEventListener('click', function(evt) {
     if ((evt.target.classList.contains('popup__close')) || ((evt.target.classList.contains('popup')))) {
       hidePopup(item);
