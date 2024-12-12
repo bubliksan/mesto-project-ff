@@ -22,7 +22,7 @@ const cardImage = cardImagePopup.querySelector('.popup__image');
 const cardCaption = cardImagePopup.querySelector('.popup__caption');
 const profileTitle = document.querySelector('.profile__title');
 const profileDescr = document.querySelector('.profile__description');
-const popupsAll = document.querySelectorAll('.popup'); 
+const allPopups = document.querySelectorAll('.popup'); 
 const addForm = document.forms['new-place'];
 const editForm = document.forms['edit-profile'];
 const nameInput = editForm.elements.name;
@@ -70,7 +70,7 @@ initialCards.forEach(function(item) {
 
 // Вешаем обработчик кликов закрытия на формы (вариант)
 
-popupsAll.forEach(function(item) {
+allPopups.forEach(function(item) {
   item.addEventListener('click', function(evt) {
     if ((evt.target.classList.contains('popup__close')) || ((evt.target.classList.contains('popup')))) {
       hidePopup(item);
