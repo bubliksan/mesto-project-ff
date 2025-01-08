@@ -1,4 +1,6 @@
 .card__like-button {
+  justify-self: center;
+  align-self: start;
   width: 21px;
   height: 18px;
   background: transparent url('../../../images/like-inactive.svg') no-repeat;
