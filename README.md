@@ -6,6 +6,9 @@ https://www.figma.com/design/PSdQFRHoxXJFs2FH8IXViF/JavaScript.-Sprint-9?node-id
 
 Репозиторий https://github.com/bubliksan/mesto-project-ff.git
 
+Готовый вид:  https://bubliksan.github.io/mesto-project-ff
+ 
+
 Браузер Mozilla Firefox, Pixel Perfect плагин.
 
 
