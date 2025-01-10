@@ -1,12 +1,8 @@
-const handleResponse = res => {
+const handleResponse = (res) => {
     if (res.ok) {
         return res.json();
     }
-   return Promise.reject(`Ошибка: ${res.status}`); 
-}
-
-const handleError = (err) => {
-    console.log(`Problem! ${err}`)
+   return Promise.reject(`Ошибка!: ${res.status}`); 
 }
 
 // Запрос к серверу на загрузку данных профиля
@@ -17,8 +13,7 @@ export function getProfile(config) {
             authorization: config.headers.authorization
         }
     })
-    .then(handleResponse)    
-    .catch(handleError)
+    .then(handleResponse)
 }
 
 // Запрос к серверу на обновление данных профиля 
@@ -33,7 +28,6 @@ export function editProfile(namePr, descriptionPr, config) {
         })
     })
     .then(handleResponse)
-    .catch(handleError)
 }
 
 // Запрос к серверу на загрузку карточек
@@ -45,7 +39,6 @@ export function getCards(config) {
         }
     })
     .then(handleResponse)
-    .catch(handleError)    
 }
 
 // Запрос к серверу на добавление карточки
@@ -60,7 +53,6 @@ export function sendCard(newCard, config) {
         })
     })
     .then(handleResponse)
-    .catch(handleError)
 }
 
 // Запрос к серверу на удаление карточки
@@ -71,7 +63,6 @@ export function deleteCard(cardId, config) {
         headers: config.headers,
     })
     .then(handleResponse)
-    .catch(handleError)
 }
 
 // Запрос к серверу на установку лайка
@@ -82,7 +73,6 @@ export function sendLike(cardId, config) {
         headers: config.headers,
     })
     .then(handleResponse)
-    .catch(handleError)
 }
 
 // Запрос к серверу на снятие лайка
@@ -93,7 +83,6 @@ export function removeLike(cardId, config) {
         headers: config.headers,
     })
     .then(handleResponse)
-    .catch(handleError)
 }
 
 // Запрос к серверу на изменение аватара
@@ -107,5 +96,4 @@ export function editAvatar(link, config) {
         })
     })
     .then(handleResponse)
-    .catch(handleError)
 }

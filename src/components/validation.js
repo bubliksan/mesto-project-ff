@@ -2,7 +2,7 @@
 
 export function enableValidation(validationOptions) {
     const formList = Array.from(document.querySelectorAll(validationOptions.formSelector));
-    formList.forEach((formElement) => {
+      formList.forEach((formElement) => {
       setEventListeners(formElement, validationOptions);
     });
 }
@@ -11,11 +11,11 @@ export function enableValidation(validationOptions) {
 
 export function clearValidation(formElement, validationOptions) {    
     const formElements = getFormElements(formElement, validationOptions);
-    formElements[0].forEach((inputElement) => {
+    formElements.list.forEach((inputElement) => {
         hideInputError(inputElement, formElement, validationOptions);
     })
-    formElements[1].disabled = true;
-    formElements[1].classList.add(validationOptions.inactiveButtonClass);
+    formElements.button.disabled = true;
+    formElements.button.classList.add(validationOptions.inactiveButtonClass);
 
 }
 
@@ -24,17 +24,17 @@ export function clearValidation(formElement, validationOptions) {
 function getFormElements(formElement, validationOptions) {
     const inputList = Array.from(formElement.querySelectorAll(validationOptions.inputSelector));
     const buttonElement = formElement.querySelector(validationOptions.submitButtonSelector);
-    return [inputList, buttonElement];
+    return {list: inputList, button: buttonElement};
 }
 
 // Для каждого input в форме вешаем слушатель, отключаем кнопку
 
 function setEventListeners(formElement, validationOptions) {
     const formElements = getFormElements(formElement, validationOptions);
-    formElements[0].forEach((inputElement) => {
+    formElements.list.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
         isValid(formElement, inputElement, validationOptions);
-        toggleButtonState(formElements[0], formElements[1], validationOptions);
+        toggleButtonState(formElements.list, formElements.button, validationOptions);
       });
     });
 }

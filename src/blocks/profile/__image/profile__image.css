@@ -1,4 +1,5 @@
 .profile__image {
+  position: relative;
   width: 120px;
   height: 120px;
   -webkit-border-radius: 50%;
@@ -10,7 +11,16 @@
 }
 
 .profile__image:hover {
-  cursor: pointer;
+  cursor: url("../../../images/edit-cursor.svg"), auto;
+}
+
+.profile__image-overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.profile__image-overlay:hover {
+  background-color: rgb(0 0 0 / .6);
 }
 
 @media screen and (max-width: 740px) {

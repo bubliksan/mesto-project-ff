@@ -45,6 +45,7 @@ const changeAvatarForm = document.forms['new-avatar'];
 const nameInput = editForm.elements.name;
 const descrInput = editForm.elements.description;
 const cardFunctions = {delete: handleDeletePlace, like: handleLikePlace, popup: handleImageClick}
+const handleError = (err) => {console.log(`Ошибка!: ${err}`)}
 
 // Функция добавления новой карточки
 
@@ -58,9 +59,14 @@ function addCard(evt) {
   newCard.link = urlInput.value;
   newCard.descr = placeInput.value;
   newCard.owner = {_id: apiConfig.id}; // для определения владельца карточки
-  sendCard(newCard, apiConfig).then((data) => {
+  sendCard(newCard, apiConfig)
+  .then((data) => {
     renderCard(data, 'prepend');
     hidePopup(editItemAdd);
+  })
+  .catch(handleError)
+  .finally(() => {     
+    changeSubmitButton(editItemAdd);
   })
   addForm.reset();
 }
@@ -73,18 +79,22 @@ function handleDeletePlace(id, evt) {
   showPopup(deleteItemPopup);
 }
 
-// обработчик лайка в карточке
+// Обработчик лайка в карточке
 
 function handleLikePlace(id, evt) {
   modifiedCardId = id;
   modifiedCardTargetButton = evt;
   if (evt.target.classList.contains('card__like-button_is-active')) {
-    removeLike(modifiedCardId, apiConfig).then((data) => {
+    removeLike(modifiedCardId, apiConfig)    
+    .catch(handleError)
+    .then((data) => {
       likeCard(data.likes.length, modifiedCardTargetButton);
       evt.target.classList.remove('card__like-button_is-active');
     })
   } else {
-    sendLike(modifiedCardId, apiConfig).then((data) => {
+    sendLike(modifiedCardId, apiConfig)    
+    .catch(handleError)
+    .then((data) => {
         likeCard(data.likes.length , modifiedCardTargetButton);
     })
   }
@@ -108,6 +118,19 @@ function handleImageClick(evt) {
   showPopup(cardImagePopup);  // показать попап с картинкой и текстом
 }
 
+// Функция возвращения надписи кнопки после ответа сервера
+
+function changeSubmitButton(itemPopup) {
+  setTimeout(() => {
+    const submitButton = itemPopup.querySelector('.popup__button');
+      if (itemPopup.classList.contains('popup_type_edit') || 
+      itemPopup.classList.contains('popup_type_new-card') ||
+      itemPopup.classList.contains('popup_type_new-avatar')) {
+        submitButton.textContent = 'Сохранить';
+      }
+  }, 2000)  
+}
+
 // Запускаем всё
 
 Promise.all([
@@ -123,6 +146,7 @@ Promise.all([
     renderCard(item);
   });
 })
+.catch(handleError) 
 
 // Запускаем валидацию форм
 
@@ -143,12 +167,16 @@ allPopups.forEach(function(item) {
 editForm.addEventListener('submit', function(evt) {
   evt.preventDefault();
   editForm.elements['submit-button'].textContent = 'Сохранение...';
-  editProfile(nameInput, descrInput, apiConfig).then((data) => {
+  editProfile(nameInput, descrInput, apiConfig)
+  .then((data) => {
     profileTitle.textContent = data.name;
     profileDescr.textContent = data.about;
     hidePopup(editItemPopup);
+  })      
+  .catch(handleError)
+  .finally(() => {        
+    changeSubmitButton(editItemPopup);  
   })
-  
 });
 
 // Слушаем submit в форме добавления карточки
@@ -159,10 +187,15 @@ addForm.addEventListener('submit', addCard);
 
 deleteForm.addEventListener('submit', function(evt) {
   evt.preventDefault();
-  deleteCard(modifiedCardId, apiConfig).then(() => {
+  deleteCard(modifiedCardId, apiConfig)
+  .then(() => {
     deletePlace(modifiedCardTargetButton);
     hidePopup(deleteItemPopup);
-  }) 
+  })
+  .catch(handleError)
+  .finally(() => {      
+    changeSubmitButton(deleteItemPopup);
+  })
 })
 
 // Слушаем submit в форме редактирования аватара
@@ -171,17 +204,23 @@ changeAvatarForm.addEventListener('submit', function(evt) {
   const urlInput = changeAvatarForm.elements.link.value;
   evt.preventDefault();
   changeAvatarForm.elements['submit-button'].textContent = 'Сохранение...';
-  editAvatar(urlInput, apiConfig).then(() => {
+  editAvatar(urlInput, apiConfig)
+  .then(() => {
     profileImage.setAttribute('style', `background-image: url(${urlInput})`);
     hidePopup(editAvatarPopup);
-  })  
+  })
+  .catch(handleError)
+  .finally(() => {      
+    changeSubmitButton(editAvatarPopup);
+  })
 })
 
-// Слушаем клик на картинке профиля
+// Слушаем клик на картинке аватара
 
 profileImage.addEventListener('click', (evt) => {
   changeAvatarForm.reset();
-  showPopup(editAvatarPopup); 
+  showPopup(editAvatarPopup);
+  clearValidation(changeAvatarForm, validationOptions);
 })
 
 // Слушаем клик на кнопке редактирования профиля
@@ -191,7 +230,7 @@ editProfileButton.addEventListener('click', function() {
   descrInput.value = profileDescr.textContent;
   clearValidation(editForm, validationOptions);
   showPopup(editItemPopup);
-});
+})
 
 // Слушаем клик на кнопке добавления карточки
   
@@ -199,4 +238,4 @@ addCardButton.addEventListener('click', function() {
   clearValidation(addForm, validationOptions);
   addForm.reset();
   showPopup(editItemAdd);
-});
+})
