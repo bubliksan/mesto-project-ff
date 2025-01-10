@@ -9,7 +9,7 @@ export function createCard(card, cardFunc, config) {
   cardImage.alt = card.name;
   placeElement.querySelector('.card__like-count').textContent = card.likes.length;
   placeElement.querySelector('.card__title').textContent = card.name;
-  if(checkLike(card, config)) {
+  if(checkExistLike(card, config)) {
     placeElement.querySelector('.card__like-button').classList.add('card__like-button_is-active');
   }
   if (card.owner._id === config.id) {
@@ -21,15 +21,25 @@ export function createCard(card, cardFunc, config) {
   return(placeElement);
 }
 
-// Функция проверки своего лайка в карточке
+// Функция проверки своего лайка в карточке, полученной с сервера
 
-function checkLike(card, config) {
+function checkExistLike(card, config) {
   let result = false
   card.likes.forEach((item) => {
     if(item._id === config.id) {
       result = true;      
     }
   })
+  return result;
+}
+
+// Функция проверки своего лайка в карточке
+
+export function checkLike(evt) {
+  let result = false;
+  if (evt.target.classList.contains('card__like-button_is-active')) {
+    result = true;
+  }
   return result;
 }
 

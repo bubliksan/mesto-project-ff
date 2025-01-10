@@ -11,7 +11,7 @@
 import './index.css';
 import { apiConfig } from './scripts/api_config.js';
 import { validationOptions } from './scripts/validation_options.js';
-import { createCard, likeCard, deletePlace } from './components/card.js';
+import { createCard, likeCard, deletePlace, checkLike } from './components/card.js';
 import { hidePopup, showPopup } from './components/modal.js';
 import { enableValidation, clearValidation } from './components/validation.js';
 import { getProfile,
@@ -84,12 +84,11 @@ function handleDeletePlace(id, evt) {
 function handleLikePlace(id, evt) {
   modifiedCardId = id;
   modifiedCardTargetButton = evt;
-  if (evt.target.classList.contains('card__like-button_is-active')) {
+  if (checkLike(evt)) {
     removeLike(modifiedCardId, apiConfig)    
     .catch(handleError)
     .then((data) => {
       likeCard(data.likes.length, modifiedCardTargetButton);
-      evt.target.classList.remove('card__like-button_is-active');
     })
   } else {
     sendLike(modifiedCardId, apiConfig)    
@@ -107,7 +106,7 @@ function renderCard(item, method='append') {
   placesList[method](cardElement);
 }
 
-// функция открытия попапа с картинкой в карточке
+// Функция открытия попапа с картинкой в карточке
 
 function handleImageClick(evt) {
   const currentCard = evt.target.closest('.places__item');
@@ -205,8 +204,9 @@ changeAvatarForm.addEventListener('submit', function(evt) {
   evt.preventDefault();
   changeAvatarForm.elements['submit-button'].textContent = 'Сохранение...';
   editAvatar(urlInput, apiConfig)
-  .then(() => {
-    profileImage.setAttribute('style', `background-image: url(${urlInput})`);
+  .then((data) => {
+    console.log(data);
+    profileImage.setAttribute('style', `background-image: url(${data.avatar})`);
     hidePopup(editAvatarPopup);
   })
   .catch(handleError)
