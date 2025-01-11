@@ -14,9 +14,19 @@ export function clearValidation(formElement, validationOptions) {
     formElements.list.forEach((inputElement) => {
         hideInputError(inputElement, formElement, validationOptions);
     })
-    formElements.button.disabled = true;
-    formElements.button.classList.add(validationOptions.inactiveButtonClass);
+    toggleButtonState(formElements, true, validationOptions);
+}
 
+// Переключение состояния кнопки
+
+function toggleButtonState(element, result, validationOptions){
+    if (result) {
+        element.button.disabled = true;
+        element.button.classList.add(validationOptions.inactiveButtonClass);
+    } else {
+        element.button.disabled = false;
+        element.button.classList.remove(validationOptions.inactiveButtonClass);
+    }
 }
 
 // Функция возвращает массив с элементами формы
@@ -34,21 +44,9 @@ function setEventListeners(formElement, validationOptions) {
     formElements.list.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
         isValid(formElement, inputElement, validationOptions);
-        toggleButtonState(formElements.list, formElements.button, validationOptions);
+        toggleButtonState(formElements, hasInvalidInput(formElements.list), validationOptions);
       });
     });
-}
-
-// Переключение состояния кнопки, в зависимости от валидации
-
-function toggleButtonState(inputList, buttonElement, validationOptions) {
-    if (hasInvalidInput(inputList)) {
-        buttonElement.disabled = true;
-        buttonElement.classList.add(validationOptions.inactiveButtonClass);
-    } else {
-        buttonElement.disabled = false;
-        buttonElement.classList.remove(validationOptions.inactiveButtonClass);
-    }
 }
 
 // Функция валидации элемента

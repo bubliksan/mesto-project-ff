@@ -86,16 +86,16 @@ function handleLikePlace(id, evt) {
   modifiedCardTargetButton = evt;
   if (checkLike(evt)) {
     removeLike(modifiedCardId, apiConfig)    
-    .catch(handleError)
     .then((data) => {
       likeCard(data.likes.length, modifiedCardTargetButton);
     })
+    .catch(handleError)
   } else {
     sendLike(modifiedCardId, apiConfig)    
-    .catch(handleError)
     .then((data) => {
         likeCard(data.likes.length , modifiedCardTargetButton);
     })
+    .catch(handleError)
   }
 }
 
